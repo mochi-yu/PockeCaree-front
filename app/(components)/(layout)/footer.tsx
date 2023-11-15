@@ -43,7 +43,7 @@ export function Footer() {
   return (
     <Box sx={{ pb: 10 }}>
       <Stack justifyContent="center" alignItems="center">
-        <Container sx={{ position: 'fixed', bottom: 0 }} maxWidth="xs">
+        <Container sx={{ position: 'fixed', bottom: 0, px: 0 }} maxWidth="xs">
           <Paper sx={{ px: 0 }}>
             <BottomNavigation
               showLabels
