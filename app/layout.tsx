@@ -1,8 +1,8 @@
+import { Box, Container, Paper, ThemeProvider } from '@mui/material';
 import type { Metadata } from 'next';
-import { Inter } from 'next/font/google';
-import './globals.css';
-
-const inter = Inter({ subsets: ['latin'] });
+import { Header } from '@/app/(components)/(layout)/header';
+import { Footer } from '@/app/(components)/(layout)/footer';
+import ThemeRegistry from './theme_registry';
 
 export const metadata: Metadata = {
   title: 'ポケキャリ',
@@ -16,8 +16,24 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <link rel="manifest" href="/manifest.json" />
         <link rel="apple-touch-icon" href="/icon.png"></link>
         <meta name="theme-color" content="#009D8A" />
+        <link
+          href="https://fonts.googleapis.com/css2?family=Roboto&display=swap"
+          rel="stylesheet"
+        ></link>
       </head>
-      <body className={inter.className}>{children}</body>
+      <body style={{ margin: 0, padding: 0 }}>
+        <ThemeRegistry options={{ key: 'mui' }}>
+          <Box sx={{ bgcolor: '#F4F4F4', minHeight: '100vh' }}>
+            <Container maxWidth="xs">
+              <Paper sx={{ px: 0, bgcolor: 'white', minHeight: '100vh' }}>
+                <Header />
+                {children}
+                <Footer />
+              </Paper>
+            </Container>
+          </Box>
+        </ThemeRegistry>
+      </body>
     </html>
   );
 }
