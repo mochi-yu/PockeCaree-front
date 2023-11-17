@@ -8,16 +8,19 @@ export default function TopPage() {
   const today = new Date();
   const sampleSchedules: Schedule[] = [
     {
+      id: '1',
       title: '予定の内容',
       startDay: new Date(today.setDate(today.getDate() + 1)),
       endDay: new Date(today.setDate(today.getDate() + 10)),
     },
     {
+      id: '2',
       title: '予定の内容',
       startDay: new Date(today.setDate(today.getDate() + 1)),
       endDay: undefined,
     },
     {
+      id: '3',
       title: 'ながーーーーーーーーーーーーーい予定の内容',
       startDay: undefined,
       endDay: undefined,
@@ -25,24 +28,28 @@ export default function TopPage() {
   ];
   const sampleNewses: News[] = [
     {
+      id: '1',
       imageUrl: 'https://avatars.githubusercontent.com/u/43375000',
       title: '記事タイトル１',
       summary: '記事の要約',
       postDate: today,
     },
     {
+      id: '2',
       imageUrl: undefined,
       title: '記事タイトル２',
       summary: '記事の要約記事の要約記事の要約記事の要約記事の要約記事の要約記事の要約記事の要約',
       postDate: today,
     },
     {
+      id: '3',
       imageUrl: 'https://avatars.githubusercontent.com/u/43375000',
       title: '記事タイトル３',
       summary: '記事の要約記事の要約記事の要約記事の要約記事の要約記事の要約記事の要約記事の要約',
       postDate: today,
     },
     {
+      id: '4',
       imageUrl: undefined,
       title: '記事タイトル４',
       summary: '記事の要約記事の要約記事の要約記事の要約記事の要約記事の要約記事の要約記事の要約',
