@@ -66,7 +66,7 @@ export default function TopPage() {
         <Typography fontSize={24}>直近の予定</Typography>
         <ScheduleList schedules={schedules} />
 
-        <Divider sx={{ width: '80%', borderBottomWidth: 2, mx: 'auto' }} />
+        <Divider sx={{ width: '100%', borderBottomWidth: 2, mx: 'auto' }} />
 
         <Typography fontSize={24}>トップニュース</Typography>
         <NewsList newses={newses} />
