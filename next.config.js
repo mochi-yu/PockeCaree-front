@@ -10,4 +10,14 @@ const withPWA = require('next-pwa')({
 module.exports = withPWA({
   //next.js config
   reactStrictMode: true,
+  images: {
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 'avatars.githubusercontent.com',
+        port: '',
+        pathname: '/**',
+      },
+    ],
+  },
 });

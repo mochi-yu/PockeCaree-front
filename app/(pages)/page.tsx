@@ -1,93 +1,76 @@
-import Image from 'next/image';
-import styles from './page.module.css';
+import { Divider, Stack, Typography } from '@mui/material';
+import { ScheduleList } from '@/app/(components)/(schedule)/schedule_list';
+import { Schedule } from '@/app/(model)/schedule';
+import { NewsList } from '@/app/(components)/(news)/NewsList';
+import { News } from '@/app/(model)/news';
 
-export default function Home() {
+export default function TopPage() {
+  const today = new Date();
+  const sampleSchedules: Schedule[] = [
+    {
+      id: '1',
+      title: '予定の内容',
+      startDay: new Date(today.setDate(today.getDate() + 1)),
+      endDay: new Date(today.setDate(today.getDate() + 10)),
+    },
+    {
+      id: '2',
+      title: '予定の内容',
+      startDay: new Date(today.setDate(today.getDate() + 1)),
+      endDay: undefined,
+    },
+    {
+      id: '3',
+      title: 'ながーーーーーーーーーーーーーい予定の内容',
+      startDay: undefined,
+      endDay: undefined,
+    },
+  ];
+  const sampleNewses: News[] = [
+    {
+      id: '1',
+      imageUrl: 'https://avatars.githubusercontent.com/u/43375000',
+      title: '記事タイトル１',
+      summary: '記事の要約',
+      postDate: today,
+    },
+    {
+      id: '2',
+      imageUrl: undefined,
+      title: '記事タイトル２',
+      summary: '記事の要約記事の要約記事の要約記事の要約記事の要約記事の要約記事の要約記事の要約',
+      postDate: today,
+    },
+    {
+      id: '3',
+      imageUrl: 'https://avatars.githubusercontent.com/u/43375000',
+      title: '記事タイトル３',
+      summary: '記事の要約記事の要約記事の要約記事の要約記事の要約記事の要約記事の要約記事の要約',
+      postDate: today,
+    },
+    {
+      id: '4',
+      imageUrl: undefined,
+      title: '記事タイトル４',
+      summary: '記事の要約記事の要約記事の要約記事の要約記事の要約記事の要約記事の要約記事の要約',
+      postDate: today,
+    },
+  ];
+
+  const schedules: Schedule[] = sampleSchedules;
+  const newses: News[] = sampleNewses;
+
   return (
-    <main className={styles.main}>
-      <div className={styles.description}>
-        <p>
-          Get started by editing&nbsp;
-          <code className={styles.code}>app/page.tsx</code>
-        </p>
-        <div>
-          <a
-            href="https://vercel.com?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            By{' '}
-            <Image
-              src="/vercel.svg"
-              alt="Vercel Logo"
-              className={styles.vercelLogo}
-              width={100}
-              height={24}
-              priority
-            />
-          </a>
-        </div>
-      </div>
+    <>
+      <Stack p="30px" width="100%" spacing="25px">
+        <Typography fontSize={24}>直近の予定</Typography>
+        <ScheduleList schedules={schedules} />
 
-      <div className={styles.center}>
-        <Image
-          className={styles.logo}
-          src="/next.svg"
-          alt="Next.js Logo"
-          width={180}
-          height={37}
-          priority
-        />
-      </div>
+        <Divider sx={{ width: '100%', borderBottomWidth: 2, mx: 'auto' }} />
 
-      <div className={styles.grid}>
-        <a
-          href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Docs <span>-&gt;</span>
-          </h2>
-          <p>Find in-depth information about Next.js features and API.</p>
-        </a>
-
-        <a
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Learn <span>-&gt;</span>
-          </h2>
-          <p>Learn about Next.js in an interactive course with&nbsp;quizzes!</p>
-        </a>
-
-        <a
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Templates <span>-&gt;</span>
-          </h2>
-          <p>Explore starter templates for Next.js.</p>
-        </a>
-
-        <a
-          href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Deploy <span>-&gt;</span>
-          </h2>
-          <p>Instantly deploy your Next.js site to a shareable URL with Vercel.</p>
-        </a>
-      </div>
-    </main>
+        <Typography fontSize={24}>トップニュース</Typography>
+        <NewsList newses={newses} />
+      </Stack>
+    </>
   );
 }
