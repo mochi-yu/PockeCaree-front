@@ -1,102 +1,51 @@
-'use client';
-
-import { Box, Stack, Tab, Tabs, Typography } from '@mui/material';
-import { Swiper, SwiperSlide } from 'swiper/react';
-import { Swiper as SwiperType } from 'swiper/types';
-import 'swiper/css';
-import { useState } from 'react';
 import { News } from '@/app/(model)/news';
-import { NewsList } from '@/app/(components)/(news)/NewsList';
+import { AxiosResponse } from 'axios';
+import axios from '@/app/(util)/axios';
+import { CompanySummaryResponseParam } from '@/app/(model)/company_info';
+import { NewsPageContent } from './content';
+import axiosOrigin from 'axios';
 
-export default function NewsPage() {
-  const [swiper, setSwiper] = useState<SwiperType>();
-  const [value, setValue] = useState(0);
+const convert = require('xml-js');
 
-  const onSlideChangeHandler = (index: number) => {
-    setValue(index);
-  };
+export default async function NewsPage() {
+  const companyList = await axios
+    .get('/company?userID=1')
+    .then((res: AxiosResponse<CompanySummaryResponseParam[]>) => {
+      const { data, status } = res;
+      return data;
+    });
 
-  const onTabChange = (_: any, newValue: any) => {
-    setValue(newValue);
-    swiper?.slideTo(newValue);
-  };
+  const companyNameList = companyList.map((elm) => elm.companyName);
+  const basicList = ['就活', '25卒'];
+  const tabList = basicList.concat(companyNameList);
 
-  const today = new Date();
-  const tabList = ['トップ', '企業名', '企業名', '企業名企業名企業名企業名企業名'];
-  const sampleNewses: News[] = [
-    {
-      id: '1',
-      imageUrl: 'https://avatars.githubusercontent.com/u/43375000',
-      title: '記事タイトル１',
-      summary: '記事の要約',
-      postDate: today,
-    },
-    {
-      id: '2',
-      imageUrl: undefined,
-      title: '記事タイトル２',
-      summary: '記事の要約記事の要約記事の要約記事の要約記事の要約記事の要約記事の要約記事の要約',
-      postDate: today,
-    },
-    {
-      id: '3',
-      imageUrl: 'https://avatars.githubusercontent.com/u/43375000',
-      title: '記事タイトル３',
-      summary: '記事の要約記事の要約記事の要約記事の要約記事の要約記事の要約記事の要約記事の要約',
-      postDate: today,
-    },
-    {
-      id: '4',
-      imageUrl: undefined,
-      title: '記事タイトル４',
-      summary: '記事の要約記事の要約記事の要約記事の要約記事の要約記事の要約記事の要約記事の要約',
-      postDate: today,
-    },
-  ];
+  var newsList: News[][] = [];
+  for (var i = 0; i < tabList.length; i++) {
+    const tempList: News[] = await axiosOrigin
+      .get(
+        'https://news.google.com/rss/search?hl=ja&gl=JP&q=' + encodeURI(tabList[i]) + '&ceid=JP:ja'
+      )
+      .then((res) => {
+        const dataJsonText = convert.xml2json(res.data, { compact: true, spaces: 4 });
+        const json = JSON.parse(dataJsonText);
+
+        var tempList: News[] = [];
+        for (var i = 0; i < json.rss.channel.item.length; i++) {
+          tempList.push({
+            imageUrl: undefined,
+            title: json.rss.channel.item[i].title._text,
+            newsUrl: json.rss.channel.item[i].link._text,
+          });
+        }
+
+        return tempList;
+      });
+    newsList.push(tempList);
+  }
 
   return (
     <>
-      <Stack bgcolor="#CDE8E1">
-        {/* タブ */}
-        <Box sx={{ width: '100%', bgcolor: 'white' }}>
-          <Tabs value={value} onChange={onTabChange} variant="scrollable">
-            {tabList.map((elm, i) => (
-              <Tab
-                label={
-                  <Typography fontSize="14px" noWrap width="100px">
-                    {elm}
-                  </Typography>
-                }
-                sx={{ width: '100px' }}
-                value={i}
-                key={elm}
-              />
-            ))}
-          </Tabs>
-        </Box>
-
-        {/* コンテンツ */}
-        <Stack p="20px">
-          <Swiper
-            spaceBetween={50}
-            slidesPerView={1}
-            onSlideChange={(index) => onSlideChangeHandler(index.activeIndex)}
-            onSwiper={(swiper) => {
-              const swiperInstance = swiper;
-              setSwiper(swiperInstance);
-            }}
-            style={{ width: '100%' }}
-          >
-            {tabList.map((elm, i) => (
-              <SwiperSlide key={elm}>
-                <Stack width="100%">
-                  <NewsList newses={sampleNewses} />
-                </Stack>
-              </SwiperSlide>
-            ))}
-          </Swiper>
-        </Stack>
-      </Stack>
+      <NewsPageContent companyList={tabList} newsList={newsList} />
     </>
   );
 }

@@ -13,6 +13,9 @@ export function ScheduleListItem(props: Props): React.ReactNode {
     console.log('clicked: ' + props.schedule.title);
   };
 
+  const startDate = new Date(props.schedule.startDate!);
+  const endDate = new Date(props.schedule.endDate!);
+
   return (
     <>
       <Card sx={{ bgcolor: 'rgba(0,0,0,0)', boxShadow: 0 }}>
@@ -21,13 +24,11 @@ export function ScheduleListItem(props: Props): React.ReactNode {
             {props.schedule.title}
           </Typography>
           <Stack direction="row" spacing={1} alignItems="center">
-            {(props.schedule.startDay || props.schedule.endDay) && (
+            {(props.schedule.startDate || props.schedule.endDate) && (
               <>
                 <CalendarMonth />
                 <Typography noWrap fontSize="14px">
-                  {(props.schedule.startDay?.toLocaleDateString() || '　') +
-                    ' ～ ' +
-                    (props.schedule.endDay?.toLocaleDateString() || '')}
+                  {(startDate || '　') + ' ～ ' + (endDate || '')}
                 </Typography>
               </>
             )}

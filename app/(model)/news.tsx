@@ -1,7 +1,7 @@
 export interface News {
-  id: string;
   imageUrl?: string;
   title: string;
-  summary: string;
-  postDate: Date;
+  newsUrl: string;
+  // summary: string;
+  // postDate: Date;
 }

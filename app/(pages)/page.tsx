@@ -3,62 +3,38 @@ import { ScheduleList } from '@/app/(components)/(schedule)/schedule_list';
 import { Schedule } from '@/app/(model)/schedule';
 import { NewsList } from '@/app/(components)/(news)/NewsList';
 import { News } from '@/app/(model)/news';
+import axios from '@/app/(util)/axios';
+import axiosOrigin from 'axios';
+import { AxiosResponse } from 'axios';
 
-export default function TopPage() {
-  const today = new Date();
-  const sampleSchedules: Schedule[] = [
-    {
-      id: '1',
-      title: '予定の内容',
-      startDay: new Date(today.setDate(today.getDate() + 1)),
-      endDay: new Date(today.setDate(today.getDate() + 10)),
-    },
-    {
-      id: '2',
-      title: '予定の内容',
-      startDay: new Date(today.setDate(today.getDate() + 1)),
-      endDay: undefined,
-    },
-    {
-      id: '3',
-      title: 'ながーーーーーーーーーーーーーい予定の内容',
-      startDay: undefined,
-      endDay: undefined,
-    },
-  ];
-  const sampleNewses: News[] = [
-    {
-      id: '1',
-      imageUrl: 'https://avatars.githubusercontent.com/u/43375000',
-      title: '記事タイトル１',
-      summary: '記事の要約',
-      postDate: today,
-    },
-    {
-      id: '2',
-      imageUrl: undefined,
-      title: '記事タイトル２',
-      summary: '記事の要約記事の要約記事の要約記事の要約記事の要約記事の要約記事の要約記事の要約',
-      postDate: today,
-    },
-    {
-      id: '3',
-      imageUrl: 'https://avatars.githubusercontent.com/u/43375000',
-      title: '記事タイトル３',
-      summary: '記事の要約記事の要約記事の要約記事の要約記事の要約記事の要約記事の要約記事の要約',
-      postDate: today,
-    },
-    {
-      id: '4',
-      imageUrl: undefined,
-      title: '記事タイトル４',
-      summary: '記事の要約記事の要約記事の要約記事の要約記事の要約記事の要約記事の要約記事の要約',
-      postDate: today,
-    },
-  ];
+const convert = require('xml-js');
 
-  const schedules: Schedule[] = sampleSchedules;
-  const newses: News[] = sampleNewses;
+export default async function TopPage() {
+  const schedules = await axios
+    .get('/schedule?companyID=jayWT4BLHnfgcBi9T4y78T')
+    .then((res: AxiosResponse<Schedule[]>) => {
+      const { data, status } = res;
+      // console.log(res.data);
+      return data;
+    });
+
+  const newsList: News[] = await axiosOrigin
+    .get('https://news.google.com/rss/search?hl=ja&gl=JP&q=%E5%B0%B1%E6%B4%BB&ceid=JP:ja')
+    .then((res) => {
+      const dataJsonText = convert.xml2json(res.data, { compact: true, spaces: 4 });
+      const json = JSON.parse(dataJsonText);
+
+      var tempList: News[] = [];
+      for (var i = 0; i < 4; i++) {
+        tempList.push({
+          imageUrl: undefined,
+          title: json.rss.channel.item[i].title._text,
+          newsUrl: json.rss.channel.item[i].link._text,
+        });
+      }
+
+      return tempList;
+    });
 
   return (
     <>
@@ -69,7 +45,7 @@ export default function TopPage() {
         <Divider sx={{ width: '100%', borderBottomWidth: 2, mx: 'auto' }} />
 
         <Typography fontSize={24}>トップニュース</Typography>
-        <NewsList newses={newses} />
+        <NewsList newses={newsList} />
       </Stack>
     </>
   );
