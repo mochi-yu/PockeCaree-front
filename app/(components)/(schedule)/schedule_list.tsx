@@ -8,7 +8,7 @@ interface Props {
 
 export function ScheduleList(props: Props) {
   var scheduleListItem = props.schedules.map((elm, i) => (
-    <div key={'div_' + elm.title + elm.startDay?.toUTCString()}>
+    <div key={'div_' + elm.title + elm.startDate}>
       <ScheduleListItem schedule={elm} key={'item_' + elm.title} />
       {i != props.schedules.length - 1 && (
         <Divider

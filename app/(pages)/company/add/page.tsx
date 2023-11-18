@@ -1,14 +1,25 @@
 'use client';
 
+import { Loading } from '@/app/(components)/(layout)/loadnig';
 import { status2string } from '@/app/(model)/company_info';
 import { Button, MenuItem, Stack, TextField, Typography } from '@mui/material';
+import { useRouter } from 'next/navigation';
 import { useState } from 'react';
+import { CreateCompanyRequestParam } from '@/app/(model)/company_info';
+
+import axios from '@/app/(util)/axios';
+import { AxiosResponse } from 'axios';
+import axiosOrigin from 'axios';
+
+const convert = require('xml-js');
 
 export default function AddCompanyPage() {
-  const [name, setName] = useState('');
-  const [myPage, setMyPage] = useState('');
-  const [status, setStatus] = useState(0);
-  const [memo, setMemo] = useState('');
+  const [name, setName] = useState<string>('');
+  const [myPage, setMyPage] = useState<string>('');
+  const [status, setStatus] = useState<number>(0);
+  const [memo, setMemo] = useState<string>('');
+  const [isLoading, setIsLoading] = useState(false);
+  const router = useRouter();
 
   const companyNameHandler = (e: any) => {
     setName(e.target.value);
@@ -23,11 +34,21 @@ export default function AddCompanyPage() {
     setMemo(e.target.value);
   };
 
-  const addCompanyHandler = () => {
-    console.log(name);
-    console.log(myPage);
-    console.log(status);
-    console.log(memo);
+  const addCompanyHandler = async () => {
+    setIsLoading(true);
+
+    const req: CreateCompanyRequestParam = {
+      companyName: name,
+      mypageURL: myPage,
+      memo: memo,
+      status: status,
+    };
+
+    await axios.post('/company', req).then((res: AxiosResponse) => {
+      console.log(res);
+    });
+
+    router.push('/company');
   };
 
   return (
@@ -77,6 +98,7 @@ export default function AddCompanyPage() {
           </Button>
         </Stack>
       </Stack>
+      {isLoading ? <Loading /> : <></>}
     </>
   );
 }
