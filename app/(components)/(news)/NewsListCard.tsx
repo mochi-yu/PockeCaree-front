@@ -1,3 +1,5 @@
+'use client';
+
 import { News } from '@/app/(model)/news';
 import { Card, CardActionArea, CardMedia, Stack, Typography } from '@mui/material';
 
@@ -8,7 +10,11 @@ interface Props {
 export function NewsListCard(props: Props) {
   return (
     <Card>
-      <CardActionArea>
+      <CardActionArea
+        onClick={() => {
+          window.location.href = props.news.newsUrl;
+        }}
+      >
         <Stack direction="row">
           <CardMedia
             component="img"
@@ -16,10 +22,7 @@ export function NewsListCard(props: Props) {
             src={props.news.imageUrl || '/NoImage.jpg'}
           />
           <Stack p="10px">
-            <Typography fontSize="16px">{props.news.title}</Typography>
-            <Typography fontSize="12px" color="gray">
-              {props.news.summary}
-            </Typography>
+            <Typography fontSize="14px">{props.news.title}</Typography>
           </Stack>
         </Stack>
       </CardActionArea>

@@ -1,6 +1,5 @@
 export interface Schedule {
-  id: string;
   title: string;
-  startDay?: Date;
-  endDay?: Date;
+  startDate?: number;
+  endDate?: number;
 }

@@ -1,14 +1,16 @@
-import { CompanyInfo } from '@/app/(model)/company_info';
+import { CompanyInfo, CompanySummaryResponseParam } from '@/app/(model)/company_info';
 import { Card, CardActionArea, Stack, Typography } from '@mui/material';
 import { CompanyStatus } from './company_status';
-import { ScheduleListItem } from '../(schedule)/schedule_list_item';
 import { CalendarMonth } from '@mui/icons-material';
 
 interface Props {
-  companyInfo: CompanyInfo;
+  companyInfo: CompanyInfo | CompanySummaryResponseParam;
 }
 
 export function CompanyInfoCard(props: Props) {
+  const startDate = new Date(props.companyInfo.nextSchedule.startDate!);
+  const endDate = new Date(props.companyInfo.nextSchedule.endDate!);
+
   return (
     <>
       <Card sx={{ borderRadius: '20px', bgcolor: '#ECEEEC' }}>
@@ -16,7 +18,7 @@ export function CompanyInfoCard(props: Props) {
           <Stack spacing="10px">
             <Stack direction="row" justifyContent="space-between">
               <Typography fontSize="22px" noWrap>
-                {props.companyInfo.name}
+                {props.companyInfo.companyName}
               </Typography>
               <CompanyStatus status={props.companyInfo.status} />
             </Stack>
@@ -28,14 +30,14 @@ export function CompanyInfoCard(props: Props) {
                 <Typography fontSize="16px">{props.companyInfo.nextSchedule.title}</Typography>
               </Stack>
               <Stack direction="row" spacing={1} alignItems="center">
-                {(props.companyInfo.nextSchedule.startDay ||
-                  props.companyInfo.nextSchedule.endDay) && (
+                {(props.companyInfo.nextSchedule.startDate ||
+                  props.companyInfo.nextSchedule.endDate) && (
                   <>
                     <CalendarMonth />
                     <Typography noWrap fontSize="14px">
-                      {(props.companyInfo.nextSchedule.startDay?.toLocaleDateString() || '　') +
+                      {(startDate.toLocaleDateString() || '　') +
                         ' ～ ' +
-                        (props.companyInfo.nextSchedule.endDay?.toLocaleDateString() || '')}
+                        (endDate.toLocaleDateString() || '')}
                     </Typography>
                   </>
                 )}

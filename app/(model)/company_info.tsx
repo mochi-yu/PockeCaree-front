@@ -1,7 +1,22 @@
 import { Schedule } from '@/app/(model)/schedule';
 
 export interface CompanyInfo {
-  name: string;
+  companyName: string;
+  memo: string;
+  status: number;
+  nextSchedule: Schedule;
+}
+
+export interface CreateCompanyRequestParam {
+  companyName: string;
+  mypageURL: string;
+  memo: string;
+  status: number;
+}
+
+// 一覧ページ
+export interface CompanySummaryResponseParam {
+  companyName: string;
   memo: string;
   status: number;
   nextSchedule: Schedule;

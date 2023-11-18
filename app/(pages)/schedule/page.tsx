@@ -7,22 +7,19 @@ export default function SchedulePage() {
   const today = new Date();
   const sampleSchedules: Schedule[] = [
     {
-      id: '1',
       title: '予定の内容',
-      startDay: new Date(today.setDate(today.getDate() + 1)),
-      endDay: new Date(today.setDate(today.getDate() + 10)),
+      startDate: 100,
+      endDate: 200,
     },
     {
-      id: '2',
       title: '予定の内容',
-      startDay: new Date(today.setDate(today.getDate() + 1)),
-      endDay: undefined,
+      startDate: 300,
+      endDate: undefined,
     },
     {
-      id: '3',
       title: 'ながーーーーーーーーーーーーーい予定の内容',
-      startDay: undefined,
-      endDay: undefined,
+      startDate: undefined,
+      endDate: undefined,
     },
   ];
 
