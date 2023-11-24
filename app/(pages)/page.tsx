@@ -10,13 +10,33 @@ import { AxiosResponse } from 'axios';
 const convert = require('xml-js');
 
 export default async function TopPage() {
-  const schedules = await axios
-    .get('/schedule?companyID=jayWT4BLHnfgcBi9T4y78T')
-    .then((res: AxiosResponse<Schedule[]>) => {
-      const { data, status } = res;
-      // console.log(res.data);
-      return data;
-    });
+  // const schedules = await axios
+  //   .get('/schedule?companyID=jayWT4BLHnfgcBi9T4y78T')
+  //   .then((res: AxiosResponse<Schedule[]>) => {
+  //     const { data, status } = res;
+  //     // console.log(res.data);
+  //     return data;
+  //   });
+
+  const today = new Date();
+  const finishDate = new Date(today.getDate() + 5);
+  const schedules: Schedule[] = [
+    {
+      title: 'ESの作成',
+      startDate: today.getTime(),
+      endDate: today.getTime(),
+    },
+    {
+      title: 'エントリー',
+      startDate: today.getTime(),
+      endDate: today.getTime(),
+    },
+    {
+      title: '面接',
+      startDate: today.getTime(),
+      endDate: today.getTime(),
+    },
+  ];
 
   const newsList: News[] = await axiosOrigin
     .get('https://news.google.com/rss/search?hl=ja&gl=JP&q=%E5%B0%B1%E6%B4%BB&ceid=JP:ja')

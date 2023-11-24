@@ -28,7 +28,9 @@ export function ScheduleListItem(props: Props): React.ReactNode {
               <>
                 <CalendarMonth />
                 <Typography noWrap fontSize="14px">
-                  {(startDate || '　') + ' ～ ' + (endDate || '')}
+                  {(startDate.toLocaleDateString() || '　') +
+                    ' ～ ' +
+                    (endDate.toLocaleDateString() || '')}
                 </Typography>
               </>
             )}
